@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="market.dao.UserMapper1"> <!--命名空间,规定了我们的接口类是谁,是唯一的-->
+    <cache eviction="FIFO" flushInterval="600000" size="512" readOnly="false"/><!--开启缓存-->
+
+    <insert id="addUser" parameterType="market.entity.NewsUser">/*id:接口方法名称 ;parameterType:执行方法时传递的参数*/
+            insert into newuser(name,password) values (#{name},#{password})
+            /*这里的sql结尾不能加分号*/
+            <!--这里的id必须和NewUser中的方法名相同-->
+    </insert>
+    <update id="ModifyUser" parameterType="market.entity.NewsUser">
+        update newuser set name = #{name},password = #{password}
+        where id = #{id}
+    </update>
+    <delete id="deleteUser" parameterType="int">
+        delete from newuser where id = #{id}
+    </delete>
+    <!--parameterType:是传给方法的参数-->
+    <!--resultType:是方法返回参数-->
+    <!--resultType 只能用在 select 语句上-->
+    <select id="totalUsers" resultType="int">
+        select count(*) as count from newuser;
+    </select>
+    <select id="getUser" parameterType="int" resultType="market.entity.NewsUser">
+        select * from newuser where id = #{id}
+    </select>
+    <select id="getAllUser" resultType="market.entity.NewsUser">
+        select * from newuser;
+    </select>
+</mapper>

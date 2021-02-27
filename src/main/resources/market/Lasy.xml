@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="market.dao.Lasy">
+    <resultMap id="TeacherResult" type="market.entity.Teacher">
+        <id property="tid" column="tid"></id>
+        <id property="tname" column="tname"></id>
+        <id property="subject" column="subject"></id>
+        <collection property="slist" ofType="market.entity.Student"
+        select="queryStudent" column="tid">
+        </collection>
+    </resultMap>
+    <select id="queryStudent" resultType="market.entity.Student" parameterType="int">
+        select student.* from student,stot
+        where stot.sid = student.sid and stot.tid = #{value}
+    </select>
+    <select id="queryTeacher" resultMap="TeacherResult" parameterType="int">
+        select * from teacher where tid = #{value}
+    </select>
+
+</mapper>

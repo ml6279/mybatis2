@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="market.dao.ParameterMapper">
+    <!--通过Map传递参数,参数取值是靠Map里面的key的匹配来获取值-->
+    <select id="query2" resultType="market.entity.NewsUser" parameterType="java.util.Map">
+        select * from newuser
+        where name like concat('%',#{name},'%')
+    </select>
+    <select id="query3" resultType="market.entity.NewsUser" >
+        select * from newuser
+        where name like concat('%',#{name},'%')
+    </select>
+    <!--直接在方法传递多参数不行(没有加任何处理)-->
+    <select id="query4" resultType="market.entity.NewsUser" parameterType="java.util.Map">
+        select * from newuser
+        where name like concat('%',#{name},'%') and
+        password = #{password}
+    </select>
+    <select id="query5" resultType="market.entity.NewsUser" parameterType="java.util.Map">
+        select * from newuser
+        where name like concat('%',#{name1},'%') and
+        password = #{password}
+    </select>
+
+</mapper>

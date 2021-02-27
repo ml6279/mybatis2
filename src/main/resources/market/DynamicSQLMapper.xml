@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="market.dao.DynamicSQL">
+    <resultMap id="OrderList1" type="market.entity.EasybuyOrder">
+        <id property="id" column="id"/>
+        <result property="loginName" column="loginName"/>
+        <result property="createTime" column="createTime"/>
+        <result property="cost" column="cost"/>
+        <result property="serialNumber" column="serialNumber"/>
+        <association property="orderDesc" javaType="market.entity.OrderDesc" resultMap="DescResult">
+        </association>
+    </resultMap>
+    <resultMap id="DescResult" type="market.entity.OrderDesc">
+        <id property="id" column="b_id"/>
+        <result property="orderId" column="orderId"/>
+        <result property="describle" column="describle"/>
+    </resultMap>
+    <!--if-->
+    <select id="queryOrder1" resultMap="OrderList1">
+        select a.*,b.id b_id,b.orderId,b.describle
+        from easybuyorder a ,orderdesc b
+        where a.id = b.orderId
+        <if test="loginName != null and loginName !=''">
+            and a.loginName like concat('%',#{loginName},'%')
+        </if>
+         <if test="serialNumber != null and serialNumber !=''">
+             and a.serialNumber = #{serialNumber}
+         </if>
+    </select>
+
+    <!--if where-->
+    <resultMap id="OrderList2" type="market.entity.EasybuyOrder">
+        <id property="id" column="id"/>
+        <result property="loginName" column="loginName"/>
+        <result property="createTime" column="createTime"/>
+        <result property="cost" column="cost"/>
+        <result property="serialNumber" column="serialNumber"/>
+    </resultMap>
+    <select id="queryOrder2" resultMap="OrderList2">
+        select * from easybuyorder
+        <where>
+            <if test="loginName != null and loginName !=''">
+                and loginName like concat('%',#{loginName},'%')
+            </if>
+            <if test="serialNumber != null and serialNumber !=''">
+                and serialNumber = #{serialNumber}
+            </if>
+        </where>
+    </select>
+
+    <!--set if-->
+    <update id="updateOrder" parameterType="market.entity.EasybuyOrder">
+        update EasybuyOrder
+        <set>
+            <if test="loginName !=null and loginName !=''">
+                loginName = #{loginName},
+            </if>
+            <if test="createTime !=null and createTime !=''">
+                createTime = #{createTime},
+            </if>
+            <if test="cost !=null and cost !=''">
+                cost = #{cost},
+            </if>
+            <if test="serialNumber !=null and serialNumber !=''">
+                serialNumber = #{serialNumber},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--trim 替代 where 和 if 连用-->
+    <select id="queryOrder3" resultMap="OrderList2">
+        select * from easybuyorder
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="loginName != null and loginName !=''">
+                and loginName like concat('%',#{loginName},'%')
+            </if>
+            <if test="serialNumber != null and serialNumber !=''">
+                and serialNumber = #{serialNumber}
+            </if>
+        </trim>
+        limit #{from},#{pageSize}
+    </select>
+
+    <!--trim 替代 set 和 if 连用-->
+    <update id="updateOrder1" parameterType="market.entity.EasybuyOrder">
+        update EasybuyOrder
+        <trim prefix="set" suffixOverrides="," suffix="where id = #{id}">
+            <if test="loginName != null and loginName !=''">
+                loginName = #{loginName},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime}
+            </if>
+            <if test="cost > 0">
+                cost = #{cost}
+            </if>
+            <if test="serialNumber != null and serialNumber !=''">
+                serialNumber = #{serialNumber}
+            </if>
+        </trim>
+    </update>
+
+    <!--choose-->
+    <select id="queryOrder4" resultMap="OrderList2">
+        select * from EasybuyOrder
+        <where>
+            <choose>
+                <when test="loginName != null and loginName !=''">
+                    and loginName like concat('%',#{loginName},'%')
+                </when>
+                <when test="serialNumber != null and serialNumber !=''">
+                    and serialNumber = #{serialNumber}
+                </when>
+                <otherwise></otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!--foreach 常用数组去传递条件值-->
+    <select id="queryOrder5" resultMap="OrderList2">
+        select * from EasybuyOrder where loginName in
+        <foreach collection="array" item="aname" open="(" separator="," close=")">
+            #{aname}
+        </foreach>
+    </select>
+
+    <!--foreach 使用list去传递值-->
+    <select id="queryOrder6" resultMap="OrderList2">
+        select * from EasybuyOrder where loginName in
+        <foreach collection="list" item="aname" open="(" separator="," close=")">
+            #{aname}
+        </foreach>
+    </select>
+
+    <!--foreach map 使用list去传递条件值-->
+    <select id="queryOrder7" resultMap="OrderList2">
+        select * from EasybuyOrder where createTime >= #{ctime} and
+        loginName in
+        <foreach collection="list" item="aname" open="(" separator="," close=")">
+            #{aname}
+        </foreach>
+    </select>
+
+    <!--批量插入-->
+    <insert id="addRecordBatch" parameterType="java.util.List">
+        insert into newuser (name,password) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.name},#{item.password})
+        </foreach>
+    </insert>
+
+    <!--批量插入-->
+    <insert id="addRecordBatch1" parameterType="java.util.List">
+       <selectKey keyProperty="fetchDate" order="BEFORE" resultType="java.lang.String">
+           select current_date()
+       </selectKey>
+       insert into batis(b_name,b_date,b_desc) values
+       <foreach collection="list" item="item" separator=",">
+           (#{item.name},#{fetchDate},#{item.desc})
+       </foreach>
+    </insert>
+
+
+</mapper>

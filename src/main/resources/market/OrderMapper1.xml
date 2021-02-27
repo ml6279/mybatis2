@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="market.dao.OrderMapper1">
+    <!--配置一对多的关系-->     <!--用于修改-->
+    <resultMap id="OrderList" type="market.entity.EasybuyOrder">
+        <id property="id" column="id"/>
+        <result property="loginName" column="loginName"/>
+        <result property="createTime" column="createTime"/>
+        <result property="cost" column="cost"/>
+        <result property="serialNumber" column="serialNumber"/>
+        <collection property="detail" ofType="market.entity.OrderDetail">
+            <id property="id" column="b_id"/>
+            <result property="orderId" column="orderId"/>
+            <result property="productId" column="productId"/>
+            <result property="cost" column="b_cost"/>
+        </collection>
+    </resultMap>
+    <select id="queryAll" resultMap="OrderList">
+        select a.*,b.id b_id,b.orderId,b.productid,b.cost b_cost
+        from easybuyorder a ,orderdetail b
+        where a.id = b.orderId
+    </select>
+
+    <resultMap id="OrderList1" type="market.entity.EasybuyOrder">
+        <id property="id" column="id"/>
+        <result property="loginName" column="loginName"/>
+        <result property="createTime" column="createTime"/>
+        <result property="cost" column="cost"/>
+        <result property="serialNumber" column="serialNumber"/>
+        <collection property="detail" ofType="market.entity.OrderDetail" resultMap="DetailList"/>
+    </resultMap>
+    <resultMap id="DetailList" type="market.entity.OrderDetail">
+        <id property="id" column="id"/>
+        <result property="orderId" column="orderId"/>
+        <result property="productId" column="productId"/>
+        <result property="cost" column="b_cost"/>
+    </resultMap>
+    <select id="queryAll1" resultMap="OrderList1">
+        select a.*,b.id b_id,b.orderId,b.productid,b.cost b_cost
+        from easybuyorder a ,orderdetail b
+        where a.id = b.orderId
+    </select>
+
+    <!--一对一的关系-->
+    <select id="queryAll2" resultMap="OrderList2">
+        select a.*,b.id b_id,b.orderId,b.describle
+        from easybuyorder a ,orderdesc b
+        where a.id = b.orderId
+    </select>
+    <resultMap id="OrderList2" type="market.entity.EasybuyOrder">
+        <id property="id" column="id"/>
+        <result property="loginName" column="loginName"/>
+        <result property="createTime" column="createTime"/>
+        <result property="cost" column="cost"/>
+        <result property="serialNumber" column="serialNumber"/>
+        <association property="orderDesc" javaType="market.entity.OrderDesc">
+            <id property="id" column="b_id"/>
+            <result property="orderId" column="orderId"/>
+            <result property="productId" column="productId"/>
+            <result property="describle" column="describle"/>
+        </association>
+    </resultMap>
+
+    <select id="queryAll3" resultMap="OrderList2">
+        select a.*,b.id b_id,b.orderId,b.describle
+        from easybuyorder a ,orderdesc b
+        where a.id = b.orderId
+    </select>
+    <resultMap id="OrderList3" type="market.entity.EasybuyOrder">
+        <id property="id" column="id"/>
+        <result property="loginName" column="loginName"/>
+        <result property="createTime" column="createTime"/>
+        <result property="cost" column="cost"/>
+        <result property="serialNumber" column="serialNumber"/>
+        <association property="orderDesc" javaType="market.entity.OrderDesc" resultMap="DescResult">
+        </association>
+    </resultMap>
+    <resultMap id="DescResult" type="market.entity.OrderDesc">
+        <result property="orderId" column="orderId"/>
+        <result property="productId" column="productId"/>
+        <result property="describle" column="describle"/>
+    </resultMap>
+
+
+    <!--不存在实体类,我们使用Map去代替实体类-->
+    <select id="queryAll4" resultMap="OrderList4">
+        select a.loginName,a.cost,b.productid
+        from easybuyorder a,orderdetail b
+        where a.id = b.orderid
+    </select>
+    <resultMap id="OrderList4" type="java.util.Map">
+        <result property="loginName" column="loginName"/>
+        <result property="cost" column="cost"/>
+        <result property="productId" column="productId"/>
+    </resultMap>
+
+</mapper>

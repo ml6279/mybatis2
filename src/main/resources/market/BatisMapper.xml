@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="market.dao.BatisMapper">
+    <insert id="addBatis" parameterType="market.entity.Batis">
+        insert into batis(b_name,b_date,b_desc)
+        values (#{name},#{date},#{desc})
+    </insert>
+    <!--方法一:-->
+    <!--配置表字段和实体类属性的对照关系-->
+    <resultMap id="batisMap" type="market.entity.Batis">
+        <result column="b_id" property="id" jdbcType="INTEGER"/>
+        <result column="b_name" property="name" jdbcType="VARCHAR"/>
+        <result column="b_date" property="date" jdbcType="DATE"/>
+        <result column="b_desc" property="desc" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--resultMap 这个关键字表示返回结果,返回类型必须是我们定义某个对照结果集的id-->
+    <!--resultMap和resultType这两个都是表示返回结果,但是使用的时候,只能使用其中一个-->
+    <select id="getBatis" resultMap="batisMap" parameterType="Map">
+        select * from batis where b_id = #{id}
+    </select>
+    <!--方法二:-->
+    <resultMap id="batisesMap" type="market.entity.Batis1" autoMapping="true">
+    </resultMap>
+    <select id="getBatises" resultMap="batisesMap">
+        select * from batis;
+    </select>
+    <update id="modifyBatis" parameterType="market.entity.Batis">
+        update batis set b_name = #{name},b_date = #{date},b_desc = #{desc}
+        where b_id = #{id}
+    </update>
+
+    <!--userGeneratedKeys=“true” ：标明使用自增主键获取主键值策略-->
+    <!--keyProperty：指定对应的主键属性，也就是mybatis获取到主键值之后，将这个值封装给JavaScriptBean的哪个属性。-->
+    <!--id : 实体类的id-->
+    <insert id="addBatis1" parameterType="market.entity.Batis" useGeneratedKeys="true" keyProperty="id">
+        insert into batis(b_name,b_date,b_desc)
+        values (#{name},#{date},#{desc})
+    </insert>
+</mapper>

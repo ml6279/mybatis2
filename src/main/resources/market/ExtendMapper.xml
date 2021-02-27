@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="market.dao.ExtendMapper">
+    <resultMap id="BaseNewsUserMap" type="market.entity.NewsUser">
+        <id column="id" property="id"/>
+    </resultMap>
+    <resultMap id="NewsUserMap" type="market.entity.NewsUser" extends="BaseNewsUserMap">
+        <result column="name" property="name"/>
+        <result column="password" property="password"/>
+    </resultMap>
+    <select id="queryAll" resultMap="NewsUserMap">
+        select * from newuser
+    </select>
+    <!--mapper 的继承 (维护的角度)-->
+    <sql id="userColumns">id,name</sql>
+    <select id="queryAll2" resultType="market.entity.NewsUser">
+        select <include refid="userColumns"/>,password from newuser
+    </select>
+</mapper>
