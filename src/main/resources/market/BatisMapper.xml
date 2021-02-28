@@ -7,6 +7,7 @@
     </insert>
     <!--方法一:-->
     <!--配置表字段和实体类属性的对照关系-->
+    <!--column:数据库中的字段; property: 实体类中的属性-->
     <resultMap id="batisMap" type="market.entity.Batis">
         <result column="b_id" property="id" jdbcType="INTEGER"/>
         <result column="b_name" property="name" jdbcType="VARCHAR"/>

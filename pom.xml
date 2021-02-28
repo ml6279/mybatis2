@@ -84,6 +84,7 @@
       <artifactId>pagehelper</artifactId>
       <version>${batispage.version}</version>
     </dependency>
+    <!--junit单元测试-->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -127,6 +128,8 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
+    <!--在build中配置resources,来防止我们资源导出失败的问题-->
     <resources>
       <resource>
         <directory>src/main/java</directory><!--所在目录-->
@@ -145,6 +148,9 @@
         <filtering>false</filtering>
       </resource>
     </resources>
+
+
+
 
   </build>
 </project>
