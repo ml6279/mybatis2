@@ -167,12 +167,12 @@ public class DynamicSQLImpl implements DynamicSQL {
         ds.updateOrder(easybuyOrder);*/
 
         //trim 替代 where 和 if 连用
-        /*Map<String,Object> map = new HashMap<>();
+        Map<String,Object> map = new HashMap<>();
         map.put("loginName","李伟");
         map.put("serialNumber","111111111");
         map.put("from",0);
         map.put("pageSize",5);
-        System.out.println(ds.queryOrder3(map));*/
+        System.out.println(ds.queryOrder3(map));
 
         //trim 替代 set 和 if 连用
         /*EasybuyOrder easybuyOrder = new EasybuyOrder();
