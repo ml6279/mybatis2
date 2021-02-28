@@ -15,7 +15,7 @@
             <result property="cost" column="b_cost"/>
         </collection>
     </resultMap>
-    <select id="queryAll" resultMap="OrderList">
+       <select id="queryAll" resultMap="OrderList">
         select a.*,b.id b_id,b.orderId,b.productid,b.cost b_cost
         from easybuyorder a ,orderdetail b
         where a.id = b.orderId

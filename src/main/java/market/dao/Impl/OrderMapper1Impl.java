@@ -75,14 +75,17 @@ public class OrderMapper1Impl implements OrderMapper1 {
         OrderMapper1 om = new OrderMapper1Impl();
 
         //一对多的关系
-        /*List<EasybuyOrder> list = om.queryAll();
+        List<EasybuyOrder> list = om.queryAll();
         for (EasybuyOrder order : list){
             System.out.println(order);
             List<OrderDetail> details = order.getDetail();
             for (OrderDetail detail : details){
                 System.out.println(detail);
             }
-        }*/
+        }
+        System.out.println("*********************");
+
+
         /*List<EasybuyOrder> list = om.queryAll1();
         for (EasybuyOrder order : list){
             System.out.println(order);
@@ -103,11 +106,11 @@ public class OrderMapper1Impl implements OrderMapper1 {
             System.out.println(order);
         }*/
 
-        List<Map<String,Object>> result = om.queryAll4();
+        /*List<Map<String,Object>> result = om.queryAll4();
         System.out.println(result);
         for (Map<String, Object> stringObjectMap : result) {
             System.out.println(stringObjectMap);
-        }
+        }*/
 
     }
 }
