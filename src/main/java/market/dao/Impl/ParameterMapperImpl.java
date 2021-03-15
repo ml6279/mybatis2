@@ -112,6 +112,7 @@ public class ParameterMapperImpl implements ParameterMapper {
         //分页
         String name = "李伟";
         String password = "1234";
+
         System.out.println(query6(name,password));
 
 

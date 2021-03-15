@@ -1,10 +1,8 @@
 package market.entity;
 
-import lombok.Data;
-
 import java.util.Date;
 
-@Data
+
 public class Batis {
     private int id;
     private String name;
